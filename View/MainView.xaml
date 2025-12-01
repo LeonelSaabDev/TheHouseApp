@@ -1,0 +1,290 @@
+﻿<Window x:Class="TheHouseLogin.View.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TheHouseLogin.View"
+        xmlns:viewModel="clr-namespace:TheHouseLogin.ViewModel"
+        xmlns:converters="clr-namespace:TheHouseLogin.Converters"
+        mc:Ignorable="d"
+        Title="MainWindowView" Height="700" Width="1300"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True">
+
+    <Window.DataContext>
+        <viewModel:MainViewModel/>
+    </Window.DataContext>
+
+    <Window.Resources>
+        <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
+    </Window.Resources>
+
+    <Border CornerRadius="12"
+        BorderThickness="3">
+
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#9a999e" Offset="0"/>
+                <GradientStop Color="#debe30" Offset="0.75"/>
+                <GradientStop Color="#3C2F00" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                <GradientStop Color="#0D0D0D" Offset="0"/>
+                <GradientStop Color="#E1C033" Offset="0.50"/>
+                <GradientStop Color="#3C2F00" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.Background>
+
+        <Grid>
+            <!-- DECLARACION DE FILAS Y COLUMNAS -->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <!-- Barra de título -->
+                <RowDefinition Height="*"/>
+                <!-- Contenido principal -->
+                <RowDefinition Height="30"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <!-- Lista de Productos -->
+                <ColumnDefinition Width="900"/>
+                <!-- Registro de Ventas -->
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Barra de título personalizada -->
+            <Border   Grid.Row="0" 
+                      Grid.ColumnSpan="2"
+                      CornerRadius="10,10,0,0"
+                      Background="#dfbe32"
+                      Height="40"
+                      Opacity="0.95">
+
+                <Grid MouseDown="TitleBar_MouseDown">
+                    <TextBlock Text="THE HOUSE BEBIDAS - PANEL DE PRODUCTOS"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0"
+                           FontWeight="Bold"
+                           Foreground="White"
+                           FontSize="14"/>
+
+                    <StackPanel Orientation="Horizontal" 
+                            HorizontalAlignment="Right">
+
+                        <!-- Minimizar -->
+                        <Button x:Name="btnMinimize" 
+                            Content="🗕"
+                            Width="40"
+                            Height="40"
+                            Click="btnMinimize_Click"
+                            Background="Transparent"
+                            Foreground="White" 
+                            BorderBrush="{x:Null}"/>
+
+                        <!-- Maximizar / Restaurar -->
+                        <Button Content="🗖" 
+                            Width="40"
+                            Height="40"
+                            Click="Maximize_Click"
+                            Background="Transparent"
+                            Foreground="White"
+                            BorderBrush="{x:Null}"/>
+
+                        <!-- Cerrar -->
+                        <Button x:Name="btnClose"
+                            Content="✖" 
+                            Width="40" 
+                            Height="40"
+                            Click="btnClose_Click"
+                            Background="Transparent" 
+                            Foreground="White" 
+                            BorderBrush="{x:Null}"/>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            
+            <!-- Firma inferior izquierda -->
+            <TextBlock Grid.Row="2"
+                               Grid.ColumnSpan="2"
+                               Text="by Leo Saab"
+                               Foreground="White"
+                               FontSize="12"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right"
+                               Margin="0,0,10,0"
+                               Opacity="0.6"
+                               FontStyle="Italic"/>
+
+            <!-- Panel de Productos (Columna Izquierda) -->
+            <Grid Grid.Row="1" Grid.Column="0" Margin="20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <!-- Búsqueda -->
+                    <RowDefinition Height="*"/>
+                    <!-- Lista -->
+                    <RowDefinition Height="Auto"/>
+                    <!-- Botones -->
+                </Grid.RowDefinitions>
+
+                <!-- Barra de búsqueda -->
+                <StackPanel Orientation="Horizontal" 
+                            Margin="0 0 0 10">
+                    
+                    <TextBox Width="300" Height="35" Margin="0 0 10 0"
+                             Text="{Binding FiltroBusqueda, UpdateSourceTrigger=PropertyChanged}"
+                             VerticalContentAlignment="Center"                             
+                             Background="#1A1A1A"
+                             Foreground="White"
+                             BorderBrush="#E1C033"
+                             BorderThickness="1"
+                             FontSize="14"/>
+                    
+                    <!--<Button Content="Buscar"
+                            Width="100" Height="35"
+                            Command="{Binding BuscarCommand}"
+                            Background="#E1C033"
+                            Foreground="Black"
+                            FontWeight="Bold"
+                            BorderBrush="Transparent"
+                            Margin="5,0,0,0"/>-->
+                </StackPanel>
+
+                <!-- Lista de productos -->
+                <DataGrid Grid.Row="1"
+                          ItemsSource="{Binding ProductosFiltrados}"
+                          SelectedItem="{Binding ProductoSeleccionado, Mode=TwoWay}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          IsReadOnly="True"
+                          Background="#1A1A1A"
+                          Foreground="Black"
+                          ColumnHeaderHeight="35"
+                          RowHeight="35"
+                          BorderBrush="#E1C033"
+                          BorderThickness="1"
+                          Margin="0,0,0,10">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="80"/>
+                        <DataGridTextColumn Header="Nombre" Binding="{Binding Nombre}" Width="*"/>
+                        <DataGridTextColumn Header="Precio" Binding="{Binding Precio}" Width="100"/>
+                        <DataGridTextColumn Header="Stock" Binding="{Binding Stock}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Botones -->
+                <StackPanel Grid.Row="2" 
+                            Orientation="Horizontal"
+                            HorizontalAlignment="Right" 
+                            Margin="0">
+                    
+                    <Button Content="Agregar"
+                            Width="100" Height="35" Margin="5 0"
+                            Command="{Binding AgregarCommand}"
+                            Background="#f7d43e"
+                            Foreground="Black"
+                            FontWeight="Bold"
+                            BorderBrush="Transparent"
+                            Click="btnAgregar_Click"/>
+
+                    <Button Content="Editar"
+                            Width="100" Height="35" Margin="5 0"
+                            Command="{Binding EditarCommand}"
+                            Background="#f7d43e"
+                            Foreground="Black"
+                            FontWeight="Bold"
+                            BorderBrush="Transparent"
+                            Click="btnEditar_Click"/>
+
+                    <Button Content="Eliminar"
+                            Width="100" Height="35" Margin="5 0"
+                            Command="{Binding EliminarCommand}"
+                            Background="#fa7373"
+                            Foreground="Black"
+                            FontWeight="Bold"
+                            BorderBrush="Transparent"
+                            Click="btnEliminar_Click"/>
+
+                    <Button Content="Vender"
+                            Width="100" Height="35" Margin="5 0"
+                            Background="#90EE90"
+                            Foreground="Black"
+                            FontWeight="Bold"
+                            BorderBrush="Transparent"
+                            Click="btnVender_Click"/>
+                </StackPanel>
+            </Grid>
+
+            <!-- Panel Registro de Ventas (Columna Derecha) -->
+            <Grid Grid.Row="1" Grid.Column="1" Margin="20">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Lista de ventas -->
+                <DataGrid ItemsSource="{Binding Ventas}"
+                          SelectedItem="{Binding VentaSeleccionada, Mode=TwoWay}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          IsReadOnly="True"
+                          Background="#1A1A1A"
+                          Foreground="Black"
+                          BorderBrush="#E1C033"
+                          BorderThickness="1"
+                          RowHeight="35"
+                          ColumnHeaderHeight="35"
+                          Margin="0 0 0 10">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Producto" Binding="{Binding Nombre}" Width="*"/>
+                        <DataGridTextColumn Header="Precio" Binding="{Binding Precio}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Totales -->
+                <StackPanel Grid.Row="2" HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding TotalVentas, StringFormat=Total: {0:C}}"
+               Foreground="White"
+               FontSize="16"
+               FontWeight="Bold"
+               Margin="0,0,0,5"/>
+
+                    <TextBlock Text="{Binding TotalCigarrillos, StringFormat=Total Cigarrillos: {0:C}}"
+               Foreground="White"
+               FontSize="16"
+               FontWeight="Bold"
+               Margin="0,0,0,10"/>
+
+                    <!-- Botones: LIMPIAR y BORRAR -->
+                    <StackPanel Orientation="Horizontal"            HorizontalAlignment="Right">
+                        
+                        <Button Content="LIMPIAR REGISTRO"
+                                Width="160" Height="35" Margin="5,0"
+                                Background="#fa7373"
+                                Foreground="White"
+                                FontWeight="Bold"
+                                BorderBrush="Transparent"
+                                Command="{Binding LimpiarVentasCommand}"/>
+
+                        <Button Content="BORRAR SELECCIONADO"
+                                Width="160" Height="35" Margin="5,0"
+                                Background="#fa7373"
+                                Foreground="White"
+                                FontWeight="Bold"
+                                BorderBrush="Transparent"
+                                Command="{Binding BorrarVentaCommand}"/>
+                    </StackPanel>
+                </StackPanel>
+
+            </Grid>
+
+        </Grid>
+    </Border>
+    
+
+</Window>

@@ -1,0 +1,12 @@
+﻿<Application x:Class="TheHouseLogin.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:TheHouseLogin"
+             Startup="ApplicationStart">
+    <Application.Resources>
+
+        <ResourceDictionary Source="/Styles/UIColors.xaml"/>
+
+    </Application.Resources>
+    
+</Application>

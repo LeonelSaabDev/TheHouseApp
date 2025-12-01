@@ -1,0 +1,32 @@
+# Build Folders
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.cache
+*.pfx
+*.dbmdl
+
+# SQL Server files
+*.mdf
+*.ldf
+
+# Packages
+packages/
+*.nupkg
+project.lock.json
+
+# Logs
+*.log
+
+# WPF auto generated
+*.g.cs
+*.g.i.cs
+*.baml
+
+# OS junk
+Thumbs.db
+*.DS_Store
